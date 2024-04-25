@@ -19,6 +19,7 @@ const path = require('path');
 const csvWriter = require('csv-write-stream');
 
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+require('log-timestamp');
 
 const args = yargs(hideBin(process.argv))
     .option('input-file',
@@ -40,6 +41,14 @@ const args = yargs(hideBin(process.argv))
             alias: 'number',
             type: 'string',
             description: 'The number connected to 2Chat you want to use to run this script and perform the number verifications'
+        }
+    )
+    .option('throttle-ms',
+        {
+            alias: 'throttle',
+            type: 'string',
+            description: 'Number of ms between requests.  Defaults to 5000.  Use 1200 for 50 req/sec.',
+            default: '5000'
         }
     )
     .demandOption('input-file')
@@ -100,7 +109,7 @@ async function main() {
                     //
                     // we wait 5 seconds to respect the API limits or the request will fail
                     //
-                    await sleep(5000);
+                    await sleep(args.timeout);
                 }
             }
             catch (e) {
