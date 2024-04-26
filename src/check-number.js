@@ -109,7 +109,7 @@ async function main() {
                     //
                     // we wait 5 seconds to respect the API limits or the request will fail
                     //
-                    await sleep(args.timeout);
+                    await sleep(args.throttle);
                 }
             }
             catch (e) {
